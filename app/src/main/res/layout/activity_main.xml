@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <EditText
+        android:id="@+id/distanceInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Podaj odległość (km)"
+        android:inputType="numberDecimal"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"/>
+
+    <Button
+        android:id="@+id/generateRouteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Generuj losową trasę"
+        android:layout_below="@id/distanceInput"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp" />
+
+    <Button
+        android:id="@+id/generateSpecificRouteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Generuj trasę o podanej odległości"
+        android:layout_below="@id/generateRouteButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/locationTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/generateSpecificRouteButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:text="Location will be displayed here" />
+</RelativeLayout>
