@@ -11,6 +11,7 @@ import android.os.Looper;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -26,44 +27,50 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
-
-import com.example.spacerdonikad.LocaleHelper;
-
 import java.util.Locale;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private static final String LANGUAGE_KEY = "language_key";
+    private static final String THEME_KEY = "theme_key";
     private FusedLocationProviderClient fusedLocationClient;
-    private TextView locationTextView;
     private EditText distanceInput;
     private ActivityResultLauncher<String> requestPermissionLauncher;
     private LatLng currentLocation;
     private boolean isPolish;
+    private boolean isDarkTheme;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // Odczytaj zapisany język z SharedPreferences przed ustawieniem układu
+        // Odczytaj zapisany język i motyw z SharedPreferences przed ustawieniem układu
         isPolish = getSharedPreferences("AppSettings", MODE_PRIVATE).getBoolean(LANGUAGE_KEY, true);
+        isDarkTheme = getSharedPreferences("AppSettings", MODE_PRIVATE).getBoolean(THEME_KEY, false);
+
         Log.d(TAG, "onCreate: Setting initial locale to " + (isPolish ? "pl" : "en"));
         LocaleHelper.setLocale(this, isPolish ? "pl" : "en");
+
+        // Ustawienie motywu
+        AppCompatDelegate.setDefaultNightMode(isDarkTheme ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        locationTextView = findViewById(R.id.locationTextView);
         distanceInput = findViewById(R.id.distanceInput);
         Button generateRouteButton = findViewById(R.id.generateRouteButton);
         Button generateSpecificRouteButton = findViewById(R.id.generateSpecificRouteButton);
-        Button toggleThemeButton = findViewById(R.id.toggleThemeButton);
-        Button toggleLanguageButton = findViewById(R.id.toggleLanguageButton);
+        Switch themeSwitch = findViewById(R.id.themeSwitch);
+        Switch languageSwitch = findViewById(R.id.languageSwitch);
+
+        // Ustawienie przełączników w odpowiedniej pozycji
+        themeSwitch.setChecked(isDarkTheme);
+        languageSwitch.setChecked(isPolish);
 
         generateRouteButton.setOnClickListener(v -> generateRandomRoute());
         generateSpecificRouteButton.setOnClickListener(v -> generateRouteWithDistance());
-        toggleThemeButton.setOnClickListener(v -> toggleTheme());
-        toggleLanguageButton.setOnClickListener(v -> toggleLanguage());
+        themeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> toggleTheme(isChecked));
+        languageSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> toggleLanguage(isChecked));
 
         requestPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
             if (isGranted) {
@@ -71,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
                 getCurrentLocation();
             } else {
                 Log.w(TAG, "Location permission denied.");
-                locationTextView.setText(R.string.permission_denied);
             }
         });
 
@@ -99,7 +105,6 @@ public class MainActivity extends AppCompatActivity {
                         if (task.isSuccessful() && task.getResult() != null) {
                             Location location = task.getResult();
                             currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                            runOnUiThread(() -> locationTextView.setText(getString(R.string.location_text, location.getLatitude(), location.getLongitude())));
                             Log.d(TAG, "Current location obtained: " + currentLocation);
                         } else {
                             Log.w(TAG, "Failed to get current location", task.getException());
@@ -119,7 +124,6 @@ public class MainActivity extends AppCompatActivity {
             }).start();
         } else {
             Log.w(TAG, "Current location is null, cannot generate route.");
-            locationTextView.setText(R.string.location_not_available);
         }
     }
 
@@ -135,11 +139,9 @@ public class MainActivity extends AppCompatActivity {
                 }).start();
             } else {
                 Log.w(TAG, "Distance input is empty.");
-                locationTextView.setText(R.string.enter_distance_error);
             }
         } else {
             Log.w(TAG, "Current location is null, cannot generate route.");
-            locationTextView.setText(R.string.location_not_available);
         }
     }
 
@@ -170,33 +172,24 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void toggleTheme() {
-        Log.d(TAG, "Toggling theme...");
-        int currentNightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-        if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            Log.d(TAG, "Set theme to MODE_NIGHT_NO");
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            Log.d(TAG, "Set theme to MODE_NIGHT_YES");
-        }
+    private void toggleTheme(boolean isDark) {
+        Log.d(TAG, "Toggling theme to " + (isDark ? "dark" : "light"));
+        isDarkTheme = isDark;
+        getSharedPreferences("AppSettings", MODE_PRIVATE).edit().putBoolean(THEME_KEY, isDarkTheme).apply();
+        AppCompatDelegate.setDefaultNightMode(isDarkTheme ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
+        resetActivity(); // Reset the activity to apply the new theme
     }
 
-    private void toggleLanguage() {
-        Log.d(TAG, "Toggling language...");
-        isPolish = !isPolish;
-        String newLocale = isPolish ? "pl" : "en";
-        Log.d(TAG, "Setting language to: " + newLocale);
-
-        // Zapisz nowy stan języka w SharedPreferences
+    private void toggleLanguage(boolean isPolishSelected) {
+        Log.d(TAG, "Toggling language to " + (isPolishSelected ? "pl" : "en"));
+        isPolish = isPolishSelected;
         getSharedPreferences("AppSettings", MODE_PRIVATE).edit().putBoolean(LANGUAGE_KEY, isPolish).apply();
-
-        LocaleHelper.setLocale(this, newLocale);
+        LocaleHelper.setLocale(this, isPolish ? "pl" : "en");
         resetActivity(); // Reset the activity to apply the new language
     }
 
     private void resetActivity() {
-        Log.d(TAG, "Resetting activity to apply new locale");
+        Log.d(TAG, "Resetting activity to apply new settings");
         Intent intent = getIntent();
         finish();
         startActivity(intent);

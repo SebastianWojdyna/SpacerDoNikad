@@ -9,4 +9,11 @@
     <string name="location_not_available">Current location is not available</string>
     <string name="permission_denied">Permission denied</string>
     <string name="MAPS_API_KEY">AIzaSyDn7TnVfFLSXxDoZlTCcE38nJBZ3NZRMLw</string>
+    <string name="theme">Theme</string>
+    <string name="light">Light</string>
+    <string name="dark">Dark</string>
+    <string name="language">Language</string>
+    <string name="en">EN</string>
+    <string name="pl">PL</string>
+    <string name="enter_distance">Enter distance in km</string>
 </resources>

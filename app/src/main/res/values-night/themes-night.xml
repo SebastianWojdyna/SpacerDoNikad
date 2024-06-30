@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">SpacerDoNikad</string>
+    <string name="generate_random_route">Generate Random Route</string>
+    <string name="generate_route_with_distance">Generate Route with Distance</string>
+    <string name="permission_denied">Permission Denied</string>
+    <string name="current_location_not_available">Current Location Not Available</string>
+    <string name="enter_distance">Enter Distance</string>
+    <string name="toggle_language">Toggle Language</string>
+</resources>

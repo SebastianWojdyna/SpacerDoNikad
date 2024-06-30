@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">SpacerDoNikad</string>
+    <string name="generate_route">Generuj losową trasę</string>
+    <string name="generate_specific_route">Generuj trasę o podanej odległości</string>
+    <string name="location_text">Tutaj będzie wyświetlana lokalizacja</string>
+    <string name="toggle_theme">Przełącz motyw</string>
+    <string name="toggle_language">Przełącz język</string>
+    <string name="enter_distance_error">Proszę podać odległość</string>
+    <string name="location_not_available">Bieżąca lokalizacja jest niedostępna</string>
+    <string name="permission_denied">Brak uprawnień</string>
+    <string name="MAPS_API_KEY">AIzaSyDn7TnVfFLSXxDoZlTCcE38nJBZ3NZRMLw</string>
+    <string name="theme">Motyw</string>
+    <string name="light">Jasny</string>
+    <string name="dark">Ciemny</string>
+    <string name="language">Język</string>
+    <string name="en">EN</string>
+    <string name="pl">PL</string>
+    <string name="enter_distance">Podaj odległość w km</string>
+</resources>
