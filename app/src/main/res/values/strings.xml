@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">SpacerDoNikad</string>
+    <string name="generate_route">Generate random route</string>
+    <string name="generate_specific_route">Generate route with specified distance</string>
+    <string name="location_text">Location will be displayed here</string>
+    <string name="toggle_theme">Toggle Theme</string>
+    <string name="toggle_language">Toggle Language</string>
+    <string name="enter_distance_error">Please enter a distance</string>
+    <string name="location_not_available">Current location is not available</string>
+    <string name="permission_denied">Permission denied</string>
     <string name="MAPS_API_KEY">AIzaSyDn7TnVfFLSXxDoZlTCcE38nJBZ3NZRMLw</string>
 </resources>

@@ -9,7 +9,7 @@
         android:id="@+id/distanceInput"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Podaj odległość (km)"
+        android:hint="@string/enter_distance"
         android:inputType="numberDecimal"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"/>
@@ -18,7 +18,7 @@
         android:id="@+id/generateRouteButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Generuj losową trasę"
+        android:text="@string/generate_route"
         android:layout_below="@id/distanceInput"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp" />
@@ -27,7 +27,7 @@
         android:id="@+id/generateSpecificRouteButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Generuj trasę o podanej odległości"
+        android:text="@string/generate_specific_route"
         android:layout_below="@id/generateRouteButton"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp" />
@@ -39,5 +39,23 @@
         android:layout_below="@id/generateSpecificRouteButton"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
-        android:text="Location will be displayed here" />
+        android:text="@string/location_text" />
+
+    <Button
+        android:id="@+id/toggleThemeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/toggle_theme"
+        android:layout_below="@id/locationTextView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp" />
+
+    <Button
+        android:id="@+id/toggleLanguageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/toggle_language"
+        android:layout_below="@id/toggleThemeButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp" />
 </RelativeLayout>
